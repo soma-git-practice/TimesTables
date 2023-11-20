@@ -75,6 +75,21 @@ class TimesTables
   end
 
   def get_content
+    text = ""
+    # 段の繰り返し
+    (1..@steps).each do |i|
+      default = "|#{filled_with_zero(i)}|"
+      (1..@steps).each do |item|
+        default += "#{filled_with_zero(i * item)}|"
+      end
+      text += default + "\n"
+    end
+    text
+  end
+
+  def get_all
+    all = get_title + "\n" + get_content
+    puts all
   end
 
 end
