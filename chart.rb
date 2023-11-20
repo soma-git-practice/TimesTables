@@ -21,6 +21,10 @@
 
 # ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
+# ーーーーーーーーーーーーーーーー
+# 一応動く
+# ーーーーーーーーーーーーーーーー
+
 # def double_digit(arg)
 #   "%03d" % arg
 # end
@@ -48,6 +52,9 @@
 
 # ch(10)
 
+# ーーーーーーーーーーーーーーーー
+# 途中
+# ーーーーーーーーーーーーーーーー
 
 class TimesTables
   def initialize(arg)
@@ -62,19 +69,14 @@ class TimesTables
   end
 
   def get_title
-    total = String.new("|")
-    (@steps + 1).times do |step|
-      total += filled_with_zero(step) + "|"
+    (0..@steps).inject("|") do |result, item|
+      result + filled_with_zero(item) + "|"
     end
-    total
   end
 
   def get_content
-    @steps.times do |arg|
-    end
   end
 
 end
 
-puts TimesTables.new(10).get_title
-
+puts TimesTables.new(5).get_title
