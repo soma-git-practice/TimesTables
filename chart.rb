@@ -18,7 +18,6 @@
 # |08|08|16|24|32|40|48|42|64|72|
 # |09|09|18|27|36|45|30|63|72|81|
 
-
 # ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
 # ーーーーーーーーーーーーーーーー
@@ -56,42 +55,58 @@
 # 途中
 # ーーーーーーーーーーーーーーーー
 
+# 九九表
 class TimesTables
   def initialize(arg)
     # 段
     @steps = arg
     # 段*段の桁数を取得
-    @digit = (@steps ** 2).to_s.size
+    @digit = (@steps**2).to_s.size
   end
 
+  # 0埋め
   def filled_with_zero(arg)
-    "%0#{@digit}d" % arg
+    format("%0#{@digit}d", arg)
   end
 
-  def get_title
-    (0..@steps).inject("|") do |result, item|
-      result + filled_with_zero(item) + "|"
+  # かける数
+  def return_title
+    (0..@steps).inject('|') do |result, item|
+      "#{result + filled_with_zero(item)}|"
     end
   end
 
-  def get_content
-    text = ""
-    # 段の繰り返し
-    (1..@steps).each do |i|
-      default = "|#{filled_with_zero(i)}|"
-      (1..@steps).each do |item|
-        default += "#{filled_with_zero(i * item)}|"
+  # かけられる数
+  def return_content
+    # 見出し
+    def generate_title
+      (1..@steps).inject([]) do |result, item|
+        result << "|#{filled_with_zero(item)}|"
       end
-      text += default + "\n"
     end
-    text
+    # 内容
+    # arry = []
+    # (1..@steps).each do |item|
+    #   arry << (1..@steps).inject(generate_title[item - 1]) do |result, block|
+    #     "#{result + filled_with_zero(item * block)}|"
+    #   end
+    # end
+    # arry.join("\n")
+    
+    # 内容
+    def generate_content
+      (1..@steps).map do |item|
+        
+      end
+    end
+    
+    # 見出し + 内容
+    generate_content
   end
 
-  def get_all
-    all = get_title + "\n" + get_content
-    puts all
+  def return_all
+    "#{return_title}\n#{return_content}"
   end
-
 end
 
-puts TimesTables.new(5).get_title
+p TimesTables.new(5).return_content
