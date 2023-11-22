@@ -5,7 +5,6 @@
 
 # 補足
 # ->引数の数に応じて増幅！
-# ->検索にヒットしたら、該当箇所を色付けする！
 
 # |00|01|02|03|04|05|06|07|08|09|
 # |01|01|02|03|04|05|06|07|08|09|
@@ -22,55 +21,58 @@
 
 # 九九表
 class TimesTables
-  def initialize(arg)
+  def initialize(steps)
     # 段
-    @steps = arg
+    @steps = steps
     # 段*段の桁数を取得
-    @digit = (@steps**2).to_s.size
+    @digit = calculate_digit(steps**2)
+  end
+
+  # 桁計算
+  def calculate_digit(number)
+    number.to_s.size
   end
 
   # 0埋め
-  def filled_with_zero(arg)
-    format("%0#{@digit}d", arg)
+  def filled_with_zero(number)
+    format("%0#{@digit}d", number)
   end
 
   # かける数
-  def return_title
-    (0..@steps).inject('|') do |result, item|
-      "#{result + filled_with_zero(item)}|"
+  def generate_row
+    (0..@steps).inject('|') do |result, step|
+      "#{result + filled_with_zero(step)}|"
     end
   end
 
   # かけられる数
-  def return_content
+  def generate_content
     # 見出し
-    def generate_title
-      (1..@steps).inject([]) do |result, item|
-        result << "#{filled_with_zero(item)}"
+    def title_row
+      (1..@steps).inject([]) do |result, step|
+        result << filled_with_zero(step)
       end
     end
-    
+
     # 内容
-    def generate_content
+    def content_rows
       (1..@steps).map do |title|
         (1..@steps).inject('|') do |result, index|
-          result + filled_with_zero(title*index) + "|"
+          result + "#{filled_with_zero(title * index)}|"
         end
       end
     end
-    
+
     # 見出し + 内容
-    # これと迷った。generate_title.zip(generate_content).map(&:join).join("\n")
-    content_arr =
-    generate_title.map.with_index do |title, index|
-    "|" + title + generate_content[index]
+    content_arr = title_row.map.with_index do |title, index|
+      "|#{title}#{content_rows[index]}"
     end
     content_arr.join("\n")
   end
 
-  def return_all
-    "#{return_title}\n#{return_content}"
+  def generate_table
+    puts "#{generate_row}\n#{generate_content}"
   end
 end
 
-puts TimesTables.new(9).return_all
+TimesTables.new(5).generate_table
