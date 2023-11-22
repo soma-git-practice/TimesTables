@@ -20,41 +20,6 @@
 
 # ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
-# ーーーーーーーーーーーーーーーー
-# 一応動く
-# ーーーーーーーーーーーーーーーー
-
-# def double_digit(arg)
-#   "%03d" % arg
-# end
-
-# def ch(int)
-#   int.integer?
-
-#   # 初期
-#   total = String.new("|")
-#   (int + 1).times do |arg|
-#     total += double_digit(arg) + "|"
-#   end
-#   puts total
-
-#   int.times do |arg|
-#     arg += 1
-#     local = double_digit(arg)
-#     total = String.new("|#{local}|")
-#     int.times do |n|
-#       total += (double_digit(arg * (n + 1))).to_s + "|"
-#     end
-#     puts total
-#   end
-# end
-
-# ch(10)
-
-# ーーーーーーーーーーーーーーーー
-# 途中
-# ーーーーーーーーーーーーーーーー
-
 # 九九表
 class TimesTables
   def initialize(arg)
@@ -81,27 +46,26 @@ class TimesTables
     # 見出し
     def generate_title
       (1..@steps).inject([]) do |result, item|
-        result << "|#{filled_with_zero(item)}|"
+        result << "#{filled_with_zero(item)}"
       end
     end
-    # 内容
-    # arry = []
-    # (1..@steps).each do |item|
-    #   arry << (1..@steps).inject(generate_title[item - 1]) do |result, block|
-    #     "#{result + filled_with_zero(item * block)}|"
-    #   end
-    # end
-    # arry.join("\n")
     
     # 内容
     def generate_content
-      (1..@steps).map do |item|
-        
+      (1..@steps).map do |title|
+        (1..@steps).inject('|') do |result, index|
+          result + filled_with_zero(title*index) + "|"
+        end
       end
     end
     
     # 見出し + 内容
-    generate_content
+    # これと迷った。generate_title.zip(generate_content).map(&:join).join("\n")
+    content_arr =
+    generate_title.map.with_index do |title, index|
+    "|" + title + generate_content[index]
+    end
+    content_arr.join("\n")
   end
 
   def return_all
@@ -109,4 +73,4 @@ class TimesTables
   end
 end
 
-p TimesTables.new(5).return_content
+puts TimesTables.new(9).return_all
