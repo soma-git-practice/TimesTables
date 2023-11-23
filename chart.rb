@@ -48,26 +48,19 @@ class TimesTables
   # かけられる数
   def generate_content
     # 見出し
-    def title_row
-      (1..@steps).inject([]) do |result, step|
-        result << filled_with_zero(step)
-      end
-    end
+    title_row = (1..@steps).inject([]) { |result, step| result << filled_with_zero(step) }
 
     # 内容
-    def content_rows
-      (1..@steps).map do |title|
-        (1..@steps).inject('|') do |result, index|
-          result + "#{filled_with_zero(title * index)}|"
-        end
+    content_rows = (1..@steps).map do |title|
+      (1..@steps).inject('|') do |result, index|
+        result + "#{filled_with_zero(title * index)}|"
       end
     end
 
     # 見出し + 内容
-    content_arr = title_row.map.with_index do |title, index|
+    title_row.map.with_index do |title, index|
       "|#{title}#{content_rows[index]}"
-    end
-    content_arr.join("\n")
+    end.join("\n")
   end
 
   def generate_table
@@ -75,4 +68,4 @@ class TimesTables
   end
 end
 
-TimesTables.new(5).generate_table
+TimesTables.new(5).generate_content
