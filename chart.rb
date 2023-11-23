@@ -68,4 +68,4 @@ class TimesTables
   end
 end
 
-TimesTables.new(5).generate_content
+TimesTables.new(5).generate_table
