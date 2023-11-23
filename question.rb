@@ -1,15 +1,16 @@
 class User
-  def initialize(name)
-    @name = name
+  attr_reader :hoge
+  def initialize
+    @hoge = 'デフォルト'
   end
-
-  def name
-    @name
-  end
-
-  @name = '書き換えました'
+  @hoge = '書き換えました'
 end
 
-user = User.new('Bob')
-puts user.name
-#=> 'Bob'
+
+p User.new.hoge #=> デフォルト
+p User.new.instance_variable_get(:@hoge) #=> デフォルト
+
+
+p User.new #=> <User:~~~~ @hoge="デフォルト">
+p User.instance_variable_get(:@hoge) #=> 書き換えました
+# p User.hoge #=> undefined method `hoge`
