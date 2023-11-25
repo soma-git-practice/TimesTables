@@ -64,8 +64,6 @@ class TimesTables
   end
 
   def generate_table
-    puts "#{generate_row}\n#{generate_content}"
+    "#{generate_row}\n#{generate_content}"
   end
 end
-
-TimesTables.new(5).generate_table
