@@ -6,3 +6,5 @@ question.rb・・・作成する中での学びで疑問に感じたことをま
 
 wiki・・・question.rbのコメント整理<br>
 https://github.com/soma-git-practice/TimesTables/wiki
+
+contact・・・https://github.com/soma-git-practice/TimesTables/discussions/6#discussion-5888368
