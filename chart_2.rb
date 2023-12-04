@@ -41,11 +41,17 @@ class TimesTables
   @marks_size = @marks.size
 
   def self.array_mix_alternative(array_first, array_second)
+    argument_first_size = array_first.count
+    argument_second_size = array_second.count
+    
     # 二つの配列の要素数を比較し、それぞれ変数に打ち込む
-    big_array = 
-    total_array = array_first.zip(array_second).flatten.compact
+    bigger_array, smaller_array = (array_first.size < array_second.size) ? [array_second, array_first] : [array_first, array_second]
+    total_array = bigger_array.zip(smaller_array).flatten
+    total_array.count(nil) == 1 ? total_array.compact! : raise('引数の二つの配列の要素数は、１個分の差が必要')
+    
+    # TODO：あれ？配列ないの半角スペースっていつ削除されているのだろうか？削除されていること自体は、ありがたい。
   end
 
 end
 
-p TimesTables.array_mix_alternative(['|','|','|'], [1,2,3,4,5])
+puts TimesTables.array_mix_alternative(['|','|','|'], [1,2,    3, 4])
