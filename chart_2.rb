@@ -40,11 +40,12 @@ class TimesTables
   @marks = self.mark_array(0)
   @marks_size = @marks.size
 
-  def self.mix_array
-    @mix_size = @nums_size + @marks_size
-    mix_array = []
+  def self.array_mix_alternative(array_first, array_second)
+    # 二つの配列の要素数を比較し、それぞれ変数に打ち込む
+    big_array = 
+    total_array = array_first.zip(array_second).flatten.compact
   end
 
 end
 
-p TimesTables.mix_array
+p TimesTables.array_mix_alternative(['|','|','|'], [1,2,3,4,5])
