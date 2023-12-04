@@ -8,17 +8,43 @@
 # |07|07|14|21|28|35|42|49|64|63|
 # |08|08|16|24|32|40|48|42|64|72|
 # |09|09|18|27|36|45|30|63|72|81|
-
 # 0埋め
 # 桁の増減
 # 区切り文字
 
-# 段数
-steps = 5
+class TimesTables
+  # 段数
+  @steps = 5
+  # 記号
+  @mark = '|'
 
-# 0 ~ 段数までの配列
-array = [*0..steps]
+  # 0 ~ 段数までの配列の作成・・・arg_to_steps_array(0)
+  # 1 ~ 段数までの配列の作成・・・arg_to_steps_array(1)
+  def self.arg_to_steps_array(start_point)
+    [*start_point..@steps]
+  end
 
-# 文字列を記号で挟む
-# 記号、数字、記号。記号は常に数字より１多い
-['|'][1]['|'][2]['|']
+  # 数字配列
+  def self.integer_array(integer)
+    arg_to_steps_array(integer)
+  end
+
+  @nums = self.integer_array(0)
+  @nums_size = @nums.size
+
+  # 記号配列
+  def self.mark_array(integer)
+    arg_to_steps_array(integer).push('last_string').map{ @mark }
+  end
+
+  @marks = self.mark_array(0)
+  @marks_size = @marks.size
+
+  def self.mix_array
+    @mix_size = @nums_size + @marks_size
+    mix_array = []
+  end
+
+end
+
+p TimesTables.mix_array
