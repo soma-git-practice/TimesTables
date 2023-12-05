@@ -33,6 +33,6 @@ RSpec.describe '九九表' do
   end
 
   it '九九表の一段目の作成' do
-    expect(tables.total).to eq '|00|01|02|03|04|05|'
+    expect(tables.first_line).to eq '|00|01|02|03|04|05|'
   end
 end

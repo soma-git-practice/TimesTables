@@ -46,7 +46,7 @@ class TimesTables
     @mark + array * @mark + @mark
   end
 
-  def total
+  def first_line
     wrap_array_with_mark integer_array
   end
 
