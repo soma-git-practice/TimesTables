@@ -53,9 +53,9 @@ class TimesTables
   end
 
   # 配列の先頭の移動
-  def transfer_array
+  def transfer_array!
     @steps_array.delete_at 0
   end
 end
 
-p TimesTables.new.transfer_array
+p TimesTables.new.transfer_array!

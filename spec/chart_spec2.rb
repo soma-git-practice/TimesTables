@@ -37,7 +37,7 @@ RSpec.describe '九九表' do
   end
   
   it '配列の先頭の移動' do
-    expect(tables.transfer_array).to eq '01'
+    expect(tables.transfer_array!).to eq '01'
     expect(tables.steps_array).to eq ['02', '03', '04', '05']
   end
 end
