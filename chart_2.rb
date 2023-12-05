@@ -14,40 +14,40 @@
 # 区切り文字
 
 class TimesTables
-  # 多分この初期値をinitializeで定義して、インスタンスメソッド使っていくのだろう
+  attr_reader :steps, :mark
 
-  # 段数
-  @steps = 5
-  # 記号
-  @mark = '|'
+  def initialize(steps: 5, mark: '|')
+    # 段数
+    @steps = steps
+    # 記号
+    @mark  = mark
+  end
 
   # 0 ~ 段数までの配列の作成・・・arg_to_steps_array(0)
   # 1 ~ 段数までの配列の作成・・・arg_to_steps_array(1)
-  def self.arg_to_steps_array(start_point = 0)
+  def arg_to_steps_array(start_point = 0)
     [*start_point..@steps]
   end
 
   # 0埋め
-  def self.filled_with_zero(integer)
+  def filled_with_zero(integer)
     max_number_digit = @steps.pow(2).to_s.size
     "%0#{ max_number_digit }d" % integer
   end
 
   # 数字配列
-  def self.integer_array(integer = 0)
+  def integer_array(integer = 0)
     arg_to_steps_array(integer).map{|n| filled_with_zero(n)}
   end
   
   # 記号で挟む
-  def self.wrap_array_with_mark(array)
+  def wrap_array_with_mark(array)
     # 補足 [1,2,3] * '|' = '1|2|3'
     @mark + array * @mark + @mark
   end
 
-  def self.total
+  def total
     wrap_array_with_mark integer_array
   end
 
 end
-
-p TimesTables.total
