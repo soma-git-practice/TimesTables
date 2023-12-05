@@ -22,8 +22,11 @@ class TimesTables
     # 記号
     @mark  = mark
     # 段の配列
-    @steps_array = integer_array(1)
+    @steps_array = arg_to_steps_array(1)
   end
+  
+
+  #### パーツ
 
   # 0 ~ 段数までの配列の作成・・・arg_to_steps_array(0)
   # 1 ~ 段数までの配列の作成・・・arg_to_steps_array(1)
@@ -48,14 +51,29 @@ class TimesTables
     @mark + array * @mark + @mark
   end
 
-  def first_line
-    wrap_array_with_mark integer_array
+
+  ### 組み立て
+
+  def first_step_array
+    [ wrap_array_with_mark(integer_array) ]
   end
 
-  # 配列の先頭の移動
-  def transfer_array!
-    @steps_array.delete_at 0
+  def rest_steps_array
+    # 縦列用のループ
+    @steps_array.map do |index|
+      # 横列用のループ
+      header = [ filled_with_zero(index) ]
+      main = @steps_array.map do |n|
+              calculate = index * n
+              filled_with_zero calculate
+            end
+      wrap_array_with_mark( header + main )
+    end
+  end
+
+  def generate_table
+    first_step_array.concat(rest_steps_array).join("\n")
   end
 end
 
-p TimesTables.new.transfer_array!
+puts TimesTables.new(steps: 9).generate_table

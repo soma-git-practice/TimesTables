@@ -33,11 +33,6 @@ RSpec.describe '九九表' do
   end
 
   it '九九表の一段目の作成' do
-    expect(tables.first_line).to eq '|00|01|02|03|04|05|'
-  end
-  
-  it '配列の先頭の移動' do
-    expect(tables.transfer_array!).to eq '01'
-    expect(tables.steps_array).to eq ['02', '03', '04', '05']
+    expect(tables.first_step_array).to eq [ '|00|01|02|03|04|05|' ]
   end
 end
