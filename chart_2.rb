@@ -8,11 +8,14 @@
 # |07|07|14|21|28|35|42|49|64|63|
 # |08|08|16|24|32|40|48|42|64|72|
 # |09|09|18|27|36|45|30|63|72|81|
+
 # 0埋め
 # 桁の増減
 # 区切り文字
 
 class TimesTables
+  # 多分この初期値をinitializeで定義して、インスタンスメソッド使っていくのだろう
+
   # 段数
   @steps = 5
   # 記号
@@ -20,38 +23,31 @@ class TimesTables
 
   # 0 ~ 段数までの配列の作成・・・arg_to_steps_array(0)
   # 1 ~ 段数までの配列の作成・・・arg_to_steps_array(1)
-  def self.arg_to_steps_array(start_point)
+  def self.arg_to_steps_array(start_point = 0)
     [*start_point..@steps]
   end
 
+  # 0埋め
+  def self.filled_with_zero(integer)
+    max_number_digit = @steps.pow(2).to_s.size
+    "%0#{ max_number_digit }d" % integer
+  end
+
   # 数字配列
-  def self.integer_array(integer)
-    arg_to_steps_array(integer)
+  def self.integer_array(integer = 0)
+    arg_to_steps_array(integer).map{|n| filled_with_zero(n)}
+  end
+  
+  # 記号で挟む
+  def self.wrap_array_with_mark(array)
+    # 補足 [1,2,3] * '|' = '1|2|3'
+    @mark + array * @mark + @mark
   end
 
-  @nums = self.integer_array(0)
-  @nums_size = @nums.size
-
-  # 記号配列
-  def self.mark_array(integer)
-    arg_to_steps_array(integer).push('last_string').map{ @mark }
-  end
-
-  @marks = self.mark_array(0)
-  @marks_size = @marks.size
-
-  def self.array_mix_alternative(array_first, array_second)
-    argument_first_size = array_first.count
-    argument_second_size = array_second.count
-    
-    # 二つの配列の要素数を比較し、それぞれ変数に打ち込む
-    bigger_array, smaller_array = (array_first.size < array_second.size) ? [array_second, array_first] : [array_first, array_second]
-    total_array = bigger_array.zip(smaller_array).flatten
-    total_array.count(nil) == 1 ? total_array.compact! : raise('引数の二つの配列の要素数は、１個分の差が必要')
-    
-    # TODO：あれ？配列ないの半角スペースっていつ削除されているのだろうか？削除されていること自体は、ありがたい。
+  def self.total
+    wrap_array_with_mark integer_array
   end
 
 end
 
-puts TimesTables.array_mix_alternative(['|','|','|'], [1,2,    3, 4])
+p TimesTables.total
