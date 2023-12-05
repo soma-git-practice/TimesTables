@@ -14,13 +14,15 @@
 # 区切り文字
 
 class TimesTables
-  attr_reader :steps, :mark
+  attr_reader :steps, :mark, :steps_array
 
   def initialize(steps: 5, mark: '|')
     # 段数
     @steps = steps
     # 記号
     @mark  = mark
+    # 段の配列
+    @steps_array = integer_array(1)
   end
 
   # 0 ~ 段数までの配列の作成・・・arg_to_steps_array(0)
@@ -50,4 +52,10 @@ class TimesTables
     wrap_array_with_mark integer_array
   end
 
+  # 配列の先頭の移動
+  def transfer_array
+    @steps_array.delete_at 0
+  end
 end
+
+p TimesTables.new.transfer_array
