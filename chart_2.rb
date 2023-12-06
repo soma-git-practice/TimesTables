@@ -26,7 +26,7 @@ class TimesTables
   end
 
 
-  #### パーツ
+  #### 部品メソッド
 
   # 0 ~ 段数までの配列の作成・・・arg_to_steps_array(0)
   # 1 ~ 段数までの配列の作成・・・arg_to_steps_array(1)
@@ -40,11 +40,6 @@ class TimesTables
     "%0#{ max_number_digit }d" % integer
   end
 
-  # 数字配列
-  def integer_array(integer = 0)
-    arg_to_steps_array(integer).map{|n| filled_with_zero(n)}
-  end
-
   # 記号で挟む
   def wrap_array_with_mark(array)
     # 補足 [1,2,3] * '|' = '1|2|3'
@@ -52,11 +47,14 @@ class TimesTables
   end
 
 
-  ### 組み立て
+  ### 組み立てメソッド
 
   # 位の行
   def kurai_string
-    wrap_array_with_mark(integer_array)
+    # 0埋めをした、「0 ~ 段数」の配列
+    value = arg_to_steps_array(0).map{|n| filled_with_zero(n)}
+    # 記号で囲む
+    wrap_array_with_mark(value)
   end
 
   # 段の行
@@ -84,4 +82,4 @@ class TimesTables
   end
 end
 
-puts TimesTables.new(steps: 9).generate_table
+puts TimesTables.new(steps: 10).generate_table
