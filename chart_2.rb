@@ -24,7 +24,7 @@ class TimesTables
     # 段の配列
     @steps_array = arg_to_steps_array(1)
   end
-  
+
 
   #### パーツ
 
@@ -44,7 +44,7 @@ class TimesTables
   def integer_array(integer = 0)
     arg_to_steps_array(integer).map{|n| filled_with_zero(n)}
   end
-  
+
   # 記号で挟む
   def wrap_array_with_mark(array)
     # 補足 [1,2,3] * '|' = '1|2|3'
@@ -54,25 +54,33 @@ class TimesTables
 
   ### 組み立て
 
-  def first_step_array
-    [ wrap_array_with_mark(integer_array) ]
+  # 位の行
+  def kurai_string
+    wrap_array_with_mark(integer_array)
   end
 
-  def rest_steps_array
-    # 縦列用のループ
-    @steps_array.map do |index|
-      # 横列用のループ
-      header = [ filled_with_zero(index) ]
-      main = @steps_array.map do |n|
-              calculate = index * n
-              filled_with_zero calculate
+  # 段の行
+  def dan_string
+    result = @steps_array.map do |dan|
+              # 段を表す指標
+              index = [ filled_with_zero(dan) ]
+              # 計算
+              main = @steps_array.map do |kurai|
+                      # 値 = 段 * 位
+                      value = dan * kurai
+                      # 値を0埋めする
+                      filled_with_zero value
+                    end
+              row = index + main
+              # 記号で囲む
+              wrap_array_with_mark( row )
             end
-      wrap_array_with_mark( header + main )
-    end
+    # 文字列に変換
+    result.join("\n")
   end
 
   def generate_table
-    first_step_array.concat(rest_steps_array).join("\n")
+    [kurai_string, dan_string].join("\n")
   end
 end
 
