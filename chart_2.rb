@@ -81,5 +81,3 @@ class TimesTables
     [kurai_string, dan_string].join("\n")
   end
 end
-
-puts TimesTables.new(steps: 10).generate_table
