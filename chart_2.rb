@@ -13,18 +13,14 @@
 # 桁の増減
 # 区切り文字
 
-require 'pry'
-
 class TimesTables
   attr_reader :steps, :mark, :steps_array
 
-  def initialize(steps: 5, mark: '|', zero_flg: true)
+  def initialize(steps: 5, mark: '|')
     # 段数
     @steps = steps
     # 記号
     @mark  = mark
-    # 0埋めで使うフラグ
-    @zero_flg = zero_flg
     # 段の配列
     @steps_array = arg_to_steps_array(1)
   end
@@ -56,8 +52,7 @@ class TimesTables
   # 位の行
   def kurai_string
     # 0埋めをした、「0 ~ 段数」の配列
-    value = arg_to_steps_array(0)
-    value = value.map{|n| filled_with_zero(n)} if @zero_flg
+    value = arg_to_steps_array(0).map{|n| filled_with_zero(n)}
     # 記号で囲む
     wrap_array_with_mark(value)
   end
@@ -66,16 +61,13 @@ class TimesTables
   def dan_string
     result = @steps_array.map do |dan|
               # 段を表す指標
-              index = dan
-              index = filled_with_zero(index) if @zero_flg
-              index = [ index ]
+              index = [ filled_with_zero(dan) ]
               # 計算
               main = @steps_array.map do |kurai|
                       # 値 = 段 * 位
                       value = dan * kurai
                       # 値を0埋めする
-                      value = filled_with_zero value if @zero_flg
-                      value
+                      filled_with_zero value
                     end
               row = index + main
               # 記号で囲む
@@ -89,5 +81,3 @@ class TimesTables
     [kurai_string, dan_string].join("\n")
   end
 end
-
-puts TimesTables.new(zero_flg: false).generate_table
