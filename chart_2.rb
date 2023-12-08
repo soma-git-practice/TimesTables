@@ -14,13 +14,15 @@
 # 区切り文字
 
 class TimesTables
-  attr_reader :steps, :mark, :steps_array
+  attr_reader :steps, :mark, :steps_array, :zero_flg
 
-  def initialize(steps: 5, mark: '|')
+  def initialize(steps: 5, mark: '|', zero_flg: true)
     # 段数
     @steps = steps
     # 記号
     @mark  = mark
+    # 0埋めで使うフラグ
+    @zero_flg = zero_flg
     # 段の配列
     @steps_array = arg_to_steps_array(1)
   end
@@ -36,6 +38,7 @@ class TimesTables
 
   # 0埋め
   def filled_with_zero(integer)
+    return integer unless @zero_flg
     max_number_digit = @steps.pow(2).to_s.size
     "%0#{ max_number_digit }d" % integer
   end
@@ -52,7 +55,8 @@ class TimesTables
   # 位の行
   def kurai_string
     # 0埋めをした、「0 ~ 段数」の配列
-    value = arg_to_steps_array(0).map{|n| filled_with_zero(n)}
+    value = arg_to_steps_array(0)
+    value = value.map{|n| filled_with_zero(n)}
     # 記号で囲む
     wrap_array_with_mark(value)
   end
@@ -81,3 +85,5 @@ class TimesTables
     [kurai_string, dan_string].join("\n")
   end
 end
+
+puts TimesTables.new(zero_flg: false).generate_table
