@@ -13,8 +13,6 @@
 # 桁の増減
 # 区切り文字
 
-require 'pry'
-
 class TimesTables
   attr_reader :steps, :mark, :steps_array, :zero_flg
 
@@ -73,7 +71,7 @@ class TimesTables
                       # 値 = 段 * 位
                       value = dan * kurai
                       # 値を0埋めする
-                      value = filled_with_zero value
+                      filled_with_zero value
                     end
               row = index + main
               # 記号で囲む
