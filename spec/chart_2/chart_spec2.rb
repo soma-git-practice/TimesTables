@@ -1,4 +1,4 @@
-require_relative '../chart_2'
+require_relative '../../chart_2'
 
 RSpec.describe '九九表' do
   let(:tables){ TimesTables.new(steps: 4, mark: '|') }
