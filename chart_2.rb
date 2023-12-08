@@ -16,7 +16,7 @@
 require 'pry'
 
 class TimesTables
-  attr_reader :steps, :mark, :steps_array
+  attr_reader :steps, :mark, :steps_array, :zero_flg
 
   def initialize(steps: 5, mark: '|', zero_flg: true)
     # 段数
@@ -40,6 +40,7 @@ class TimesTables
 
   # 0埋め
   def filled_with_zero(integer)
+    return integer unless @zero_flg
     max_number_digit = @steps.pow(2).to_s.size
     "%0#{ max_number_digit }d" % integer
   end
@@ -57,7 +58,7 @@ class TimesTables
   def kurai_string
     # 0埋めをした、「0 ~ 段数」の配列
     value = arg_to_steps_array(0)
-    value = value.map{|n| filled_with_zero(n)} if @zero_flg
+    value = value.map{|n| filled_with_zero(n)}
     # 記号で囲む
     wrap_array_with_mark(value)
   end
@@ -66,16 +67,13 @@ class TimesTables
   def dan_string
     result = @steps_array.map do |dan|
               # 段を表す指標
-              index = dan
-              index = filled_with_zero(index) if @zero_flg
-              index = [ index ]
+              index = [ filled_with_zero(dan) ]
               # 計算
               main = @steps_array.map do |kurai|
                       # 値 = 段 * 位
                       value = dan * kurai
                       # 値を0埋めする
-                      value = filled_with_zero value if @zero_flg
-                      value
+                      value = filled_with_zero value
                     end
               row = index + main
               # 記号で囲む
@@ -89,3 +87,5 @@ class TimesTables
     [kurai_string, dan_string].join("\n")
   end
 end
+
+puts TimesTables.new(zero_flg: false).generate_table

@@ -17,6 +17,10 @@ RSpec.describe TimesTables do
       it '段一覧の取得' do
         expect(tables.steps_array).to eq [1, 2, 3, 4]
       end
+      
+      it '0埋めの取得' do
+        expect(tables.zero_flg).to be true
+      end
     end
 
     describe '部品メソッド' do
@@ -57,7 +61,7 @@ RSpec.describe TimesTables do
   context '0埋めしない場合' do
     let(:zero_flg){ false }
     it 'filled_with_zero' do
-      expect(tables.filled_with_zero(3)).to eq '3'
+      expect(tables.filled_with_zero(3)).to eq 3
     end
     
     it 'kurai_string' do
