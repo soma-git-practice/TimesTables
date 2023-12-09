@@ -9,9 +9,10 @@
 # |08|08|16|24|32|40|48|42|64|72|
 # |09|09|18|27|36|45|30|63|72|81|
 
-# 0埋め
-# 桁の増減
-# 区切り文字
+# TODO ファイルの作成
+# TODO ファイルに「hoge」を出力
+# TODO テストコードの作成
+# TODO 九九表の出力
 
 class TimesTables
   attr_reader :steps, :mark, :steps_array, :zero_flg
@@ -86,4 +87,9 @@ class TimesTables
   end
 end
 
-puts TimesTables.new(zero_flg: false).generate_table
+TimesTables.new(zero_flg: false).generate_table
+
+File.open('hoge.html', 'r') do |f|
+  f.seek(-20, IO::SEEK_END)
+  p f.readline
+end
