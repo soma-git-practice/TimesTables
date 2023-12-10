@@ -13,10 +13,17 @@
 # 桁の増減
 # 区切り文字
 
+require "csv"
+
 class TimesTables
   attr_reader :steps, :mark, :steps_array, :zero_flg
 
-  def initialize(steps: 5, mark: '|', zero_flg: true)
+  def initialize(
+      steps: 5,
+      mark: '|',
+      zero_flg: true
+    )
+
     # 段数
     @steps = steps
     # 記号
@@ -53,37 +60,40 @@ class TimesTables
   ### 組み立てメソッド
 
   # 位の行
-  def kurai_string
+  def kurai_array
     # 0埋めをした、「0 ~ 段数」の配列
     value = arg_to_steps_array(0)
     value = value.map{|n| filled_with_zero(n)}
-    # 記号で囲む
-    wrap_array_with_mark(value)
   end
 
   # 段の行
-  def dan_string
-    result = @steps_array.map do |dan|
-              # 段を表す指標
-              index = [ filled_with_zero(dan) ]
-              # 計算
-              main = @steps_array.map do |kurai|
-                      # 値 = 段 * 位
-                      value = dan * kurai
-                      # 値を0埋めする
-                      filled_with_zero value
-                    end
-              row = index + main
-              # 記号で囲む
-              wrap_array_with_mark( row )
+  def dan_array
+    @steps_array.map do |dan|
+      # 段を表す指標
+      index = [ filled_with_zero(dan) ]
+      # 計算
+      main = @steps_array.map do |kurai|
+              # 値 = 段 * 位
+              value = dan * kurai
+              # 値を0埋めする
+              filled_with_zero value
             end
-    # 文字列に変換
-    result.join("\n")
+      index + main
+    end
   end
 
+  # 表の表示
   def generate_table
-    [kurai_string, dan_string].join("\n")
+    items = [kurai_array, *dan_array]
+    items = items.map { |array| wrap_array_with_mark array }
+    items.join("\n")
+  end
+
+  # csv出力
+  def export_csv( csv_export_path = 'export.csv' )
+    CSV.open(csv_export_path, 'w') do |csv|
+      csv << ['段', *( steps_array.map{|item| "#{item}の位" } )]
+      dan_array.each{|item| csv << item }
+    end
   end
 end
-
-puts TimesTables.new(zero_flg: false).generate_table
