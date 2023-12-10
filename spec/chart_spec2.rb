@@ -45,12 +45,12 @@ RSpec.describe TimesTables do
       expect(tables.filled_with_zero(3)).to eq '03'
     end
     
-    it 'kurai_string' do
-      expect(tables.kurai_string).to eq '|00|01|02|03|04|'
+    it 'kurai_array' do
+      expect(tables.kurai_array).to eq ['00','01','02','03','04']
     end
     
-    it 'dan_string' do
-      expect(tables.dan_string).to eq "|01|01|02|03|04|\n|02|02|04|06|08|\n|03|03|06|09|12|\n|04|04|08|12|16|"
+    it 'dan_array' do
+      expect(tables.dan_array).to eq [['01', '01', '02','03', '04'], ['02', '02', '04', '06', '08'], ['03', '03', '06', '09', '12'], ['04', '04', '08', '12', '16']]
     end
     
     it 'generate_table' do
@@ -64,12 +64,12 @@ RSpec.describe TimesTables do
       expect(tables.filled_with_zero(3)).to eq 3
     end
     
-    it 'kurai_string' do
-      expect(tables.kurai_string).to eq '|0|1|2|3|4|'
+    it 'kurai_array' do
+      expect(tables.kurai_array).to eq [0, 1, 2, 3, 4]
     end
     
-    it 'dan_string' do
-      expect(tables.dan_string).to eq "|1|1|2|3|4|\n|2|2|4|6|8|\n|3|3|6|9|12|\n|4|4|8|12|16|"
+    it 'dan_array' do
+      expect(tables.dan_array).to eq [[1, 1, 2, 3, 4], [2, 2, 4, 6, 8], [3, 3, 6, 9, 12], [4, 4, 8, 12, 16]]
     end
     
     it 'generate_table' do
