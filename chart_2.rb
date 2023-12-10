@@ -18,9 +18,12 @@ require "csv"
 class TimesTables
   attr_reader :steps, :mark, :steps_array, :zero_flg
 
-  CSV_EXPORT_FILEPATH = 'chart_2_export.csv'
+  def initialize(
+      steps: 5,
+      mark: '|',
+      zero_flg: true
+    )
 
-  def initialize(steps: 5, mark: '|', zero_flg: true)
     # 段数
     @steps = steps
     # 記号
@@ -85,8 +88,8 @@ class TimesTables
     items.join("\n")
   end
 
-  def export_csv
-    CSV.open(CSV_EXPORT_FILEPATH, 'w') do |csv|
+  def export_csv( csv_export_path = 'export.csv' )
+    CSV.open(csv_export_path, 'w') do |csv|
       csv << ['位', *steps_array]
       dan_array.each{|item| csv << item }
     end
