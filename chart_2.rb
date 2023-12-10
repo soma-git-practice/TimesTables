@@ -82,12 +82,14 @@ class TimesTables
     end
   end
 
+  # 表の表示
   def generate_table
     items = [kurai_array, *dan_array]
     items = items.map { |array| wrap_array_with_mark array }
     items.join("\n")
   end
 
+  # csv出力
   def export_csv( csv_export_path = 'export.csv' )
     CSV.open(csv_export_path, 'w') do |csv|
       csv << ['位', *steps_array]
