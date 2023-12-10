@@ -92,7 +92,7 @@ class TimesTables
   # csv出力
   def export_csv( csv_export_path = 'export.csv' )
     CSV.open(csv_export_path, 'w') do |csv|
-      csv << ['位', *steps_array]
+      csv << ['段', *( steps_array.map{|item| "#{item}の位" } )]
       dan_array.each{|item| csv << item }
     end
   end
