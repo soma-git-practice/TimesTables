@@ -75,7 +75,7 @@ class TimesTables
               # 値を0埋めする
               filled_with_zero value
             end
-      row = index + main
+      index + main
     end
   end
 
