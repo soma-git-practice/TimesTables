@@ -75,10 +75,22 @@ class TimesTables
   end
 
   # csv出力
-  def export_csv( csv_export_path = 'export.csv' )
-    CSV.open(csv_export_path, 'w') do |csv|
+  def export_csv( file_path = 'export.csv' )
+    CSV.open(file_path, 'w') do |csv|
       csv << ['段', *( steps_array.map{|item| "#{item}の位" } )]
       dan_array.each{|item| csv << item }
     end
   end
+
+  class << self
+    # インポートして情報を元にインスタンスを作成して、表や位、段を表示する作戦
+    def import_csv(file_path = 'import.csv')
+      # まずはファイルの読み込み
+      CSV.open(file_path, 'r', headers: true, return_headers: true) do |row|
+        # 
+      end
+    end
+  end
 end
+
+puts TimesTables.import_csv('hoge.csv')
