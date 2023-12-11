@@ -84,17 +84,27 @@ class TimesTables
 
   class << self
 
+    def wrap_array_with_mark(array, mark: '|')
+      mark + array * mark + mark
+    end
+
     def import_csv(file_path = 'import.csv')
-      CSV.open(file_path, 'r') do |row|
-        # 作戦
-        # csvファイルを読みとる。
-        # 読み取ったものを仕切り線で区切る。
-        # 右よせする
-        # 表示だ！！！
-      end
+      csv_data = CSV.read(file_path)
+      # あくまで、九九表ということで、一列目の最後と、最終行の最後の文字列の文字数を比較すれば、最大文字数を決められる
+      first_behind = csv_data[0][-1].size
+      last_behind = csv_data[-1][-1].size
+      max_length = [first_behind, last_behind].max + 2
+
+      csv_data.map do |array|
+        array = array.map do |item|
+                  item.center(max_length)
+                  # 全角文字・半角文字の幅を合わせることはできるのだろうか？
+                end
+        wrap_array_with_mark array
+      end.join("\n")
     end
 
   end
 end
 
-p TimesTables.import_csv
+puts TimesTables.import_csv
