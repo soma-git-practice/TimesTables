@@ -83,14 +83,18 @@ class TimesTables
   end
 
   class << self
-    # インポートして情報を元にインスタンスを作成して、表や位、段を表示する作戦
+
     def import_csv(file_path = 'import.csv')
-      # まずはファイルの読み込み
-      CSV.open(file_path, 'r', headers: true, return_headers: true) do |row|
-        # 
+      CSV.open(file_path, 'r') do |row|
+        # 作戦
+        # csvファイルを読みとる。
+        # 読み取ったものを仕切り線で区切る。
+        # 右よせする
+        # 表示だ！！！
       end
     end
+
   end
 end
 
-puts TimesTables.import_csv('hoge.csv')
+p TimesTables.import_csv
