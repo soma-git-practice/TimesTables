@@ -1,5 +1,28 @@
 require "csv"
 
+class String
+  def length_ja
+    half_lenght = count(" -~")
+    full_length = (length - half_lenght) * 2
+    half_lenght + full_length
+  end
+
+  def ljust_ja(width, padstr=' ')
+    n = [0, width - length_ja].max
+    self + padstr * n
+  end
+
+  def rjust_ja(width, padstr=' ')
+    n = [0, width - length_ja].max
+    padstr * n + self
+  end
+
+  def center_ja(width, padstr=' ')
+    n = [0, width - length_ja].max
+    padstr * (n/2) + self
+  end
+end
+
 class TimesTables
   attr_reader :steps, :mark, :steps_array, :zero_flg
 
@@ -90,15 +113,14 @@ class TimesTables
 
     def import_csv(file_path = 'import.csv')
       csv_data = CSV.read(file_path)
-      # あくまで、九九表ということで、一列目の最後と、最終行の最後の文字列の文字数を比較すれば、最大文字数を決められる
+
       first_behind = csv_data[0][-1].size
       last_behind = csv_data[-1][-1].size
       max_length = [first_behind, last_behind].max + 2
 
       csv_data.map do |array|
         array = array.map do |item|
-                  item.center(max_length)
-                  # 全角文字・半角文字の幅を合わせることはできるのだろうか？
+                  item.rjust_ja(max_length)
                 end
         wrap_array_with_mark array
       end.join("\n")
@@ -107,4 +129,5 @@ class TimesTables
   end
 end
 
+TimesTables.new(steps: 24).export_csv('import.csv')
 puts TimesTables.import_csv
