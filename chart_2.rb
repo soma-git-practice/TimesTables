@@ -16,7 +16,6 @@ class String
     # エラー防止 -> 文字列 * 負の数 = エラー
     padding_size = [0, width - output_width].max
     _quotient, remainder = padding_size.divmod(2)
-    # hoge
     padding * (padding_size/2) + padding * remainder + self + padding * (padding_size/2)
   end
 end
