@@ -2,6 +2,7 @@ require "csv"
 require "pry"
 
 class String
+  # 半角１文字、全角２文字としてカウント
   def length_ja
     half_length = self.count(" -~|｡-ﾟ|\r|\n")
     full_length = (self.length - half_length) * 2
@@ -9,9 +10,13 @@ class String
   end
 
   def mb_ljust(width, padding=' ')
+    # 文字列を半角であれば１。それ以外は２として分けた集合の総和
     output_width = each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
+    # [0, ( 空白+文字 ) - 文字].max
+    # エラー防止 -> 文字列 * 負の数 = エラー
     padding_size = [0, width - output_width].max
-    padding * padding_size + self
+    _quotient, remainder = padding_size.divmod(2)
+    padding * (padding_size/2) + self + padding * remainder + padding * (padding_size/2)
   end
 end
 
@@ -92,7 +97,7 @@ class TimesTables
   # csv出力
   def export_csv( file_path = 'export.csv' )
     CSV.open(file_path, 'w') do |csv|
-      csv << ['段', *( steps_array.map{|item| "#{item}の位" } )]
+      csv << ['段', *( steps_array.map{|item| "#{ item }の位" } )]
       dan_array.each{|item| csv << item }
     end
   end
@@ -104,22 +109,25 @@ class TimesTables
     end
 
     def import_csv(file_path = 'import.csv')
-      csv_data = CSV.read(file_path)
+      table = CSV.read(file_path)
 
-      kurai_last = csv_data[0][-1].length_ja
-      dan_last = csv_data[-1][-1].length_ja
-      max_amount = [kurai_last, dan_last].max
+      # length_ja は、半角１文字、全角２文字で数える
+      kurai_last = table[0][-1].length_ja
+      dan_last = table[-1][-1].length_ja
+      max_length = [kurai_last, dan_last].max
 
-      csv_data.map do |array|
-        array = array.map do |item|
-                  item.mb_ljust(max_amount + 1)
-                end
-        wrap_array_with_mark array
+      table.map do |row|
+        row = row.map do |cell|
+                        # セルを１文字多めに右寄せする
+                        cell.mb_ljust(max_length + 2)
+                      end
+        # 一行を記号で飾る
+        wrap_array_with_mark row
       end.join("\n")
     end
 
   end
 end
 
-TimesTables.new(steps: 16, zero_flg: false).export_csv('import.csv')
+# TimesTables.new(steps: 6, zero_flg: false).export_csv('import.csv')
 puts TimesTables.import_csv
