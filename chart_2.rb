@@ -16,7 +16,7 @@ class String
     # エラー防止 -> 文字列 * 負の数 = エラー
     padding_size = [0, width - output_width].max
     _quotient, remainder = padding_size.divmod(2)
-    padding * (padding_size/2) + self + padding * remainder + padding * (padding_size/2)
+    padding * (padding_size/2) + padding * remainder + self + padding * (padding_size/2)
   end
 end
 
@@ -129,5 +129,5 @@ class TimesTables
   end
 end
 
-# TimesTables.new(steps: 6, zero_flg: false).export_csv('import.csv')
+TimesTables.new(steps: 6, zero_flg: true).export_csv('import.csv')
 puts TimesTables.import_csv
