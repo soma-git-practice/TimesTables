@@ -1,25 +1,17 @@
 require "csv"
+require "pry"
 
 class String
   def length_ja
-    half_lenght = count(" -~")
-    full_length = (length - half_lenght) * 2
-    half_lenght + full_length
+    half_length = self.count(" -~|｡-ﾟ|\r|\n")
+    full_length = (self.length - half_length) * 2
+    half_length + full_length
   end
 
-  def ljust_ja(width, padstr=' ')
-    n = [0, width - length_ja].max
-    self + padstr * n
-  end
-
-  def rjust_ja(width, padstr=' ')
-    n = [0, width - length_ja].max
-    padstr * n + self
-  end
-
-  def center_ja(width, padstr=' ')
-    n = [0, width - length_ja].max
-    padstr * (n/2) + self
+  def mb_ljust(width, padding=' ')
+    output_width = each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
+    padding_size = [0, width - output_width].max
+    padding * padding_size + self
   end
 end
 
@@ -114,13 +106,13 @@ class TimesTables
     def import_csv(file_path = 'import.csv')
       csv_data = CSV.read(file_path)
 
-      first_behind = csv_data[0][-1].size
-      last_behind = csv_data[-1][-1].size
-      max_length = [first_behind, last_behind].max + 2
+      kurai_last = csv_data[0][-1].length_ja
+      dan_last = csv_data[-1][-1].length_ja
+      max_amount = [kurai_last, dan_last].max
 
       csv_data.map do |array|
         array = array.map do |item|
-                  item.rjust_ja(max_length)
+                  item.mb_ljust(max_amount + 1)
                 end
         wrap_array_with_mark array
       end.join("\n")
@@ -129,5 +121,5 @@ class TimesTables
   end
 end
 
-TimesTables.new(steps: 24).export_csv('import.csv')
+TimesTables.new(steps: 16, zero_flg: false).export_csv('import.csv')
 puts TimesTables.import_csv
