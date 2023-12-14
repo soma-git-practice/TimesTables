@@ -1,25 +1,6 @@
 require "csv"
 require "pry"
 
-class String
-  # 半角１文字、全角２文字としてカウント
-  def length_ja
-    half_length = self.count(" -~|｡-ﾟ|\r|\n")
-    full_length = (self.length - half_length) * 2
-    half_length + full_length
-  end
-
-  def cjust(width, padding=' ')
-    # 文字列を半角であれば１。それ以外は２として分けた集合の総和
-    output_width = each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
-    # [0, ( 空白+文字 ) - 文字].max
-    # エラー防止 -> 文字列 * 負の数 = エラー
-    padding_size = [0, width - output_width].max
-    _quotient, remainder = padding_size.divmod(2)
-    padding * (padding_size/2) + padding * remainder + self + padding * (padding_size/2)
-  end
-end
-
 class TimesTables
   attr_reader :steps, :mark, :steps_array, :zero_flg
 
@@ -108,18 +89,38 @@ class TimesTables
       mark + array * mark + mark
     end
 
+    # 半角１文字、全角２文字としてカウント
+    def length_ja(string)
+      half_length = string.count(" -~|｡-ﾟ|\r|\n")
+      full_length = (string.length - half_length) * 2
+      half_length + full_length
+    end
+
+    # 中央寄せ
+    def cjust(string, width, padding = ' ')
+      # 文字列を半角であれば１。それ以外は２として分けた集合の総和
+      output_width = string.each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
+      # [0, ( 空白+文字 ) - 文字].max
+      # エラー防止 -> 文字列 * 負の数 = エラー
+      padding_size = [0, width - output_width].max
+      # 余白
+      half_padding = padding * (padding_size/2)
+      remainder_padding = padding * (padding_size%2)
+      # 合体
+      half_padding + remainder_padding + string + half_padding
+    end
+
     def import_csv(file_path = 'import.csv')
       table = CSV.read(file_path)
 
-      # length_ja は、半角１文字、全角２文字で数える
-      kurai_last = table[0][-1].length_ja
-      dan_last = table[-1][-1].length_ja
+      kurai_last = length_ja( table.first.last )
+      dan_last = length_ja( table.last.last )
       max_length = [kurai_last, dan_last].max
 
       table.map do |row|
         row = row.map do |cell|
                         # セルを１文字多めに右寄せする
-                        cell.cjust(max_length + 2)
+                        cjust( cell, max_length + 2 )
                       end
         # 一行を記号で飾る
         wrap_array_with_mark row
