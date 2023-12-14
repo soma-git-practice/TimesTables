@@ -9,7 +9,7 @@ class String
     half_length + full_length
   end
 
-  def mb_ljust(width, padding=' ')
+  def cjust(width, padding=' ')
     # 文字列を半角であれば１。それ以外は２として分けた集合の総和
     output_width = each_char.map{|c| c.bytesize == 1 ? 1 : 2}.reduce(0, &:+)
     # [0, ( 空白+文字 ) - 文字].max
@@ -119,7 +119,7 @@ class TimesTables
       table.map do |row|
         row = row.map do |cell|
                         # セルを１文字多めに右寄せする
-                        cell.mb_ljust(max_length + 2)
+                        cell.cjust(max_length + 2)
                       end
         # 一行を記号で飾る
         wrap_array_with_mark row
